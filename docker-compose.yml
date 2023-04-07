@@ -1,0 +1,42 @@
+version: '3.8'
+# docker stop postgres_04_07_23 go_app && docker rm postgres_04_07_23 go_app && docker volume rm postgres_04_07_23_data
+# docker build -t go_app .
+# docker-compose up
+# docker-compose down
+services:
+  postgres_04_07_23:
+    container_name: postgres_04_07_23
+    image: postgres:15-alpine
+    volumes:
+      - postgres_04_07_23_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbname
+    networks:
+      - postgres_04_07_23_network
+
+  go_app:
+    container_name: go_app
+    image: go_app:latest
+    ports:
+      - "8080:8000"
+    depends_on:
+      - postgres_04_07_23
+    environment:
+      DB_HOST: postgres_04_07_23
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: dbname
+    networks:
+      - postgres_04_07_23_network
+
+volumes:
+  postgres_04_07_23_data:
+    name: postgres_04_07_23_data
+
+networks:
+  postgres_04_07_23_network:
+    name: postgres_04_07_23_network
+    driver: bridge
