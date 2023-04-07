@@ -12,6 +12,6 @@ func GetUser(c *gin.Context, db map[string]string) {
 	if ok {
 		c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
+		c.JSON(http.StatusNotFound, gin.H{"user": user, "status": "no value"})
 	}
 }
