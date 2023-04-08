@@ -1,6 +1,7 @@
 package services
 
 import (
+	"aws-go-examples/internal/config"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -8,14 +9,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-type AwsCredentials struct {
-	AccessKey string
-	SecretKey string
-}
-
 const S3Bucket = "qt3test"
 
-func listObjects(awsCredentials AwsCredentials) *s3.ListObjectsOutput {
+func listObjects(awsCredentials config.AwsCredentials) *s3.ListObjectsOutput {
 	cred := credentials.NewStaticCredentials(awsCredentials.AccessKey, awsCredentials.SecretKey, "")
 
 	newSession := session.Must(session.NewSession(&aws.Config{
